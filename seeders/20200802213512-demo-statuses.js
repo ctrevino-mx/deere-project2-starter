@@ -3,22 +3,17 @@
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.bulkInsert(
-      "Accounts",
+      "Statuses",
       [
         {
-          description: "Family",
+          description: "Complete",
+          fontColor: "#000000",
+          backgroundColor: "#F4F4F4",
         },
         {
-          description: "Father",
-        },
-        {
-          description: "Mother",
-        },
-        {
-          description: "Son",
-        },
-        {
-          description: "Daughter",
+          description: "Pending",
+          fontColor: "#FFFFFF",
+          backgroundColor: "#FF2600",
         },
       ],
       {}

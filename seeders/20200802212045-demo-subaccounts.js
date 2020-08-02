@@ -3,22 +3,31 @@
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.bulkInsert(
-      "Accounts",
+      "Subaccounts",
       [
         {
-          description: "Family",
+          description: "Education",
         },
         {
-          description: "Father",
+          description: "Entertainment",
         },
         {
-          description: "Mother",
+          description: "Food",
         },
         {
-          description: "Son",
+          description: "Vacations",
         },
         {
-          description: "Daughter",
+          description: "Clothing",
+        },
+        {
+          description: "Health Care",
+        },
+        {
+          description: "Transportation",
+        },
+        {
+          description: "Other necessities",
         },
       ],
       {}
