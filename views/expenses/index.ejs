@@ -42,6 +42,15 @@
           </option>
           <% } %>
         </select>
+        <!-- FILTER: Building Status drop down -->
+        <select name="statusId">
+          <option value="0">--All Status--</option>
+          <% for ( let i = 0; i < status.length; i++ ) { %>
+          <option value="<%=status[i].id%>">
+            <%=status[i].description%>
+          </option>
+          <% } %>
+        </select>
         <input class="button" type="submit" value=" Filter " />
       </form>
     </div>

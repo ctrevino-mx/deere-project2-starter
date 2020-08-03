@@ -55,6 +55,7 @@ router.get("/filter/?", async (req, res) => {
       query += ' AND "Expenses"."subaccountId" = ' + req.query.subaccountId;
     } else {
       query += ' WHERE "Expenses"."subaccountId" = ' + req.query.subaccountId;
+      isThereWhere = true;
     }
   }
   if (req.query.paymentTypeId > 0) {
@@ -62,6 +63,15 @@ router.get("/filter/?", async (req, res) => {
       query += ' AND "Expenses"."paymentTypeId" = ' + req.query.paymentTypeId;
     } else {
       query += ' WHERE "Expenses"."paymentTypeId" = ' + req.query.paymentTypeId;
+      isThereWhere = true;
+    }
+  }
+  if (req.query.statusId > 0) {
+    if (isThereWhere) {
+      query += ' AND "Expenses"."statusId" = ' + req.query.statusId;
+    } else {
+      query += ' WHERE "Expenses"."statusId" = ' + req.query.statusId;
+      isThereWhere = true;
     }
   }
 
@@ -79,13 +89,14 @@ router.get("/filter/?", async (req, res) => {
   const allPaymentTypes = await PaymentTypeModel.findAll();
   const allStatuses = await StatusModel.findAll();
 
-  console.log(filteredExpenses);
+  //   console.log(filteredExpenses);
 
   res.render("expenses/index.ejs", {
     expense: filteredExpenses,
     account: allAccounts,
     subaccount: allSubaccounts,
     paymentType: allPaymentTypes,
+    status: allStatuses,
   });
 });
 
