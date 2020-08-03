@@ -17,22 +17,19 @@ router.get("/", async (req, res) => {
   const allExpenses = await ExpenseModel.findAll();
   const allAccounts = await AccountModel.findAll();
   const allSubaccounts = await SubaccountModel.findAll();
+  const allPaymentTypes = await PaymentTypeModel.findAll();
+  const allStatuses = await StatusModel.findAll();
 
   res.render("expenses/index.ejs", {
     expense: allExpenses,
     account: allAccounts,
     subaccount: allSubaccounts,
+    paymentType: allPaymentTypes,
+    status: allStatuses,
   });
-  //     ExpenseModel.findAll({ include: [{ model: AccountModel }] }).then(
-  //     (allExpenses) => {
-  //       res.render("expenses/index.ejs", {
-  //         expense: allExpenses,
-  //         account: AccountModel,
-  //       });
-  //     }
-  //   );
 });
 
+// FILTER ROUTE - FILTER THE EXPENSES BASED ON DEFINED CRITERIA
 router.get("/filter/?", async (req, res) => {
   let isThereWhere = false;
   let query = "";
@@ -41,8 +38,8 @@ router.get("/filter/?", async (req, res) => {
     '"Expenses"."comment",' +
     '"Expenses"."accountId", "Accounts"."description" AS "accountDescription",' +
     '"Expenses"."subaccountId", "Subaccounts"."description" AS "subaccountDescription",' +
-    '"Expenses"."paymentTypeId", "PaymentTypes"."description" AS "paymentTypesDescription",' +
-    '"Expenses"."statusId", "Statuses"."description" AS "statusesDescription"' +
+    '"Expenses"."paymentTypeId", "PaymentTypes"."description" AS "paymentTypeDescription",' +
+    '"Expenses"."statusId", "Statuses"."description" AS "statusDescription"' +
     'FROM "Expenses" ' +
     'INNER JOIN "Accounts" ON ("Expenses"."accountId" = "Accounts"."id")' +
     'INNER JOIN "Subaccounts" ON ("Expenses"."subaccountId" = "Subaccounts"."id")' +
@@ -60,6 +57,13 @@ router.get("/filter/?", async (req, res) => {
       query += ' WHERE "Expenses"."subaccountId" = ' + req.query.subaccountId;
     }
   }
+  if (req.query.paymentTypeId > 0) {
+    if (isThereWhere) {
+      query += ' AND "Expenses"."paymentTypeId" = ' + req.query.paymentTypeId;
+    } else {
+      query += ' WHERE "Expenses"."paymentTypeId" = ' + req.query.paymentTypeId;
+    }
+  }
 
   query += ' ORDER BY "Expenses"."date" DESC';
 
@@ -72,11 +76,16 @@ router.get("/filter/?", async (req, res) => {
   });
   const allAccounts = await AccountModel.findAll();
   const allSubaccounts = await SubaccountModel.findAll();
+  const allPaymentTypes = await PaymentTypeModel.findAll();
+  const allStatuses = await StatusModel.findAll();
+
+  console.log(filteredExpenses);
 
   res.render("expenses/index.ejs", {
     expense: filteredExpenses,
     account: allAccounts,
     subaccount: allSubaccounts,
+    paymentType: allPaymentTypes,
   });
 });
 
