@@ -1,0 +1,32 @@
+body {
+  height: 600px;
+  background-color: burlywood;
+  font-family: Georgia, "Times New Roman", Times, serif;
+  /* display: grid;
+  grid-template-columns: 20% 10% 40% 10% 20%;
+  grid-template-rows: 180px 15% 25% 25% 10% 10%; */
+}
+#exp-header {
+  background-color: aqua;
+  /* display: block; */
+}
+
+#all-sub-header {
+  background-color: cadetblue;
+}
+
+#all-nav-bar {
+  background-color: chocolate;
+}
+
+#all-filter-section {
+  background-color: darkgreen;
+}
+
+#exp-body-grid {
+  background-color: darkorange;
+}
+
+footer {
+  background-color: gold;
+}

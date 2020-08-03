@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title></title>
+    <link rel="stylesheet" href="/app.css" />
+  </head>
+  <body>
+    <header id="exp-header">Header Here</header>
+    <div id="all-sub-header">
+      <h1>Expenses Index Page</h1>
+      <nav id="all-nav-bar">
+        <a href="/expenses/new">Create an Expense</a>
+      </nav>
+    </div>
+    <div id="all-filter-section">
+      <form action="/expenses/filter/<%= account.id%>">
+        <select name="accountId">
+          <option value="0">--All accounts--</option>
+          <% for ( let i = 0; i < account.length; i++ ) { %>
+          <option value="<%=account[i].id%>">
+            <%=account[i].description%>
+          </option>
+          <% } %>
+        </select>
+        <select name="subaccountId">
+          <option value="0">--All Subaccounts--</option>
+          <% for ( let i = 0; i < subaccount.length; i++ ) { %>
+          <option value="<%=subaccount[i].id%>">
+            <%=subaccount[i].description%>
+          </option>
+          <% } %>
+        </select>
+        <input class="button" type="submit" value=" Filter " />
+      </form>
+    </div>
+    <div id="exp-body-grid">
+      <ul>
+        <% expense.forEach((item) => { %>
+        <li>
+          <input type="text" name="id" value="<%=item.id%>" disabled />
+          <input type="text" name="date" value="<%=item.date%>" disabled />
+          <input
+            type="text"
+            name="description"
+            value="<%=item.description%>"
+            disabled
+          />
+          <input type="text" name="amount" value="<%=item.amount%>" disabled />
+          <input
+            type="text"
+            name="comment"
+            value="<%=item.comment%>"
+            disabled
+          />
+          <input
+            type="text"
+            name="accountDescription"
+            value="<%=item.accountDescription%>"
+            disabled
+          />
+          <input
+            type="text"
+            name="subaccountDescription"
+            value="<%=item.subaccountDescription%>"
+            disabled
+          />
+          <input
+            type="text"
+            name="paymentTypeDescription"
+            value="<%=item.paymentTypeDescription%>"
+            disabled
+          />
+          <input
+            type="text"
+            name="statusDescription"
+            value="<%=item.statusDescription%>"
+            disabled
+          />
+          <form action="/expenses/<%= item.id %>?_method=DELETE" method="POST">
+            <input type="submit" value="DELETE" />
+          </form>
+          <!-- Add edit link here  -->
+          <a href="/expenses/<%=item.id %>/edit">Edit</a>
+        </li>
+        <% });%>
+      </ul>
+    </div>
+    <footer>
+      <p>Footer section</p>
+    </footer>
+  </body>
+</html>
