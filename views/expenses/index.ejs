@@ -8,18 +8,21 @@
   <body>
     <header id="exp-header">Header Here</header>
     <div id="all-sub-header">
-      <h1>Expenses Index Page</h1>
+      <h1>Review Your Expenses</h1>
       <nav id="all-nav-bar">
-        <a href="/expenses/new">Create an Expense</a>
+        <a href="/expenses/new">Create expense</a>
+        <a href="/expenses/board">Create Board</a>
       </nav>
     </div>
     <div id="all-filter-section">
-      <!-- FILTER: Building Account drop fown -->
-      <form action="/expenses/filter/<%= account.id%>">
+      <form action="/expenses/filter/">
+        <input type="date" id="startDate" name="startDate" value="<%=currentStartDate%>"/>
+        <input type="date" id="endDate" name="endDate"  value="<%=currentEndDate%>" />
+        <!-- FILTER: Building Account drop fown -->
         <select name="accountId">
           <option value="0">--All accounts--</option>
           <% for ( let i = 0; i < account.length; i++ ) { %>
-          <option value="<%=account[i].id%>">
+          <option value="<%=account[i].id%>" <%= account[i].id===currentAccountId? "selected":'' %>>
             <%=account[i].description%>
           </option>
           <% } %>
@@ -28,7 +31,7 @@
         <select name="subaccountId">
           <option value="0">--All Subaccounts--</option>
           <% for ( let i = 0; i < subaccount.length; i++ ) { %>
-          <option value="<%=subaccount[i].id%>">
+          <option value="<%=subaccount[i].id%>" <%= subaccount[i].id===currentSubaccountId? "selected":'' %>>
             <%=subaccount[i].description%>
           </option>
           <% } %>
@@ -37,7 +40,7 @@
         <select name="paymentTypeId">
           <option value="0">--All Types--</option>
           <% for ( let i = 0; i < paymentType.length; i++ ) { %>
-          <option value="<%=paymentType[i].id%>">
+          <option value="<%=paymentType[i].id%>" <%= paymentType[i].id===currentPaymentTypeId? "selected":'' %>>
             <%=paymentType[i].description%>
           </option>
           <% } %>
@@ -46,16 +49,21 @@
         <select name="statusId">
           <option value="0">--All Status--</option>
           <% for ( let i = 0; i < status.length; i++ ) { %>
-          <option value="<%=status[i].id%>">
+          <option value="<%=status[i].id%>" <%= status[i].id===currentStatusId? "selected":'' %>>
             <%=status[i].description%>
           </option>
           <% } %>
         </select>
-        <input class="button" type="submit" value=" Filter " />
+        <input class="button" type="submit" value="Go" />
+      </form>   
+      <form action="/expenses">
+        <input class="button" type="submit" value="Clear filter" />
       </form>
+ 
     </div>
     <div id="exp-body-grid">
       <ul>
+        <% let suma = 0 %>
         <% expense.forEach((item) => { %>
         <li>
           <input type="text" name="id" value="<%=item.id%>" disabled />
@@ -73,6 +81,7 @@
             value="<%=item.comment%>"
             disabled
           />
+          <% suma = suma + parseFloat(item.amount,2)%>
           <input
             type="text"
             name="accountDescription"
@@ -104,6 +113,12 @@
           <a href="/expenses/<%=item.id %>/edit">Edit</a>
         </li>
         <% });%>
+        <input
+        type="text"
+        name="expenseSum"
+        value="<%=suma%>"
+        disabled
+      />
       </ul>
     </div>
     <footer>

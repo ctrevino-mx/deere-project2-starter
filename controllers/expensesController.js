@@ -26,6 +26,12 @@ router.get("/", async (req, res) => {
     subaccount: allSubaccounts,
     paymentType: allPaymentTypes,
     status: allStatuses,
+    currentAccountId: 0,
+    currentSubaccountId: 0,
+    currentPaymentTypeId: 0,
+    currentStatusId: 0,
+    currentStartDate: "",
+    currentEndDate: "",
   });
 });
 
@@ -33,6 +39,11 @@ router.get("/", async (req, res) => {
 router.get("/filter/?", async (req, res) => {
   let isThereWhere = false;
   let query = "";
+  console.log(
+    "######################################################",
+    req.query.startDate,
+    req.query.endDate
+  );
   query =
     'SELECT "Expenses"."id", "Expenses"."date","Expenses"."description","Expenses"."amount",' +
     '"Expenses"."comment",' +
@@ -74,6 +85,44 @@ router.get("/filter/?", async (req, res) => {
       isThereWhere = true;
     }
   }
+  if (req.query.startDate && req.query.endDate) {
+    if (isThereWhere) {
+      query +=
+        ' AND ("Expenses"."date" >= ' +
+        "'" +
+        req.query.startDate +
+        "'" +
+        ' AND "Expenses"."date" <= ' +
+        "'" +
+        req.query.endDate +
+        "')";
+    } else {
+      query +=
+        ' WHERE ("Expenses"."date" >= ' +
+        "'" +
+        req.query.startDate +
+        "'" +
+        ' AND "Expenses"."date" <= ' +
+        "'" +
+        req.query.endDate +
+        "')";
+      isThereWhere = true;
+    }
+  } else if (req.query.startDate) {
+    if (isThereWhere) {
+      query += ' AND "Expenses"."date" >= ' + "'" + req.query.startDate + "'";
+    } else {
+      query += ' WHERE "Expenses"."date" >= ' + "'" + req.query.startDate + "'";
+      isThereWhere = true;
+    }
+  } else if (req.query.endDate) {
+    if (isThereWhere) {
+      query += ' AND "Expenses"."date" <= ' + "'" + req.query.endDate + "'";
+    } else {
+      query += ' WHERE "Expenses"."date" <= ' + "'" + req.query.endDate + "'";
+      isThereWhere = true;
+    }
+  }
 
   query += ' ORDER BY "Expenses"."date" DESC';
 
@@ -89,14 +138,18 @@ router.get("/filter/?", async (req, res) => {
   const allPaymentTypes = await PaymentTypeModel.findAll();
   const allStatuses = await StatusModel.findAll();
 
-  //   console.log(filteredExpenses);
-
   res.render("expenses/index.ejs", {
     expense: filteredExpenses,
     account: allAccounts,
     subaccount: allSubaccounts,
     paymentType: allPaymentTypes,
     status: allStatuses,
+    currentAccountId: parseInt(req.query.accountId),
+    currentSubaccountId: parseInt(req.query.subaccountId),
+    currentPaymentTypeId: parseInt(req.query.paymentTypeId),
+    currentStatusId: parseInt(req.query.statusId),
+    currentStartDate: req.query.startDate,
+    currentEndDate: req.query.endDate,
   });
 });
 
