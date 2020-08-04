@@ -10,6 +10,10 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       Expense.belongsTo(models.Account, { foreignKey: "accountId" });
+      Expense.belongsTo(models.Subaccount, { foreignKey: "subaccountId" });
+      Expense.belongsTo(models.PaymentType, { foreignKey: "paymentTypeId" });
+      Expense.belongsTo(models.Status, { foreignKey: "statusId" });
+      Expense.belongsTo(models.User, { foreignKey: "userId" });
     }
   }
   Expense.init(

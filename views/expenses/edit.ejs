@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title></title>
+    <link rel="stylesheet" href="/app.css" />
+  </head>
+  <body>
+    <header id="exp-header">Header Here</header>
+    <div id="all-sub-header">
+      <h1>Edit Your Expenses</h1>
+      <nav id="all-nav-bar">
+        <a href="/expenses/new/<%=currentUserId%>">Create expense</a>
+        <a href="/expenses/board">View Board</a>
+      </nav>
+    </div>
+    <div id="all-filter-section"></div>
+    <div id="exp-body-grid">
+      <form
+        class="expense-update-form"
+        action="/expenses/<%=expense.id%>/page/<%=triggerPage%>/user/<%=currentUserId%>?_method=PUT"
+        method="POST"
+      >
+        <input type="date" name="date" value="<%=expense.date%>" />
+        <input type="text" name="description" value="<%=expense.description%>"/>
+        <input type="text" name="amount" value="<%=expense.amount%>"/>
+        <input
+          type="text"
+          name="comment"
+          value="<%=expense.comment%>"
+        />
+        <!-- FILTER: Building Account drop fown -->
+        <select name="accountId">
+            <option value="0">--All accounts--</option>
+            <% for ( let i = 0; i < account.length; i++ ) { %>
+            <option value="<%=account[i].id%>" <%= account[i].id===expense.accountId? "selected":'' %>>
+              <%=account[i].description%>
+            </option>
+            <% } %>
+          </select>      
+          <!-- FILTER: Building Subaccount drop down -->
+          <select name="subaccountId">
+            <option value="0">--All Subaccounts--</option>
+            <% for ( let i = 0; i < subaccount.length; i++ ) { %>
+            <option value="<%=subaccount[i].id%>" <%= subaccount[i].id===expense.subaccountId? "selected":'' %>>
+              <%=subaccount[i].description%>
+            </option>
+            <% } %>
+          </select>
+        <!-- FILTER: Building Payment Type drop down -->
+        <select name="paymentTypeId">
+            <option value="0">--All Types--</option>
+            <% for ( let i = 0; i < paymentType.length; i++ ) { %>
+            <option value="<%=paymentType[i].id%>" <%= paymentType[i].id===expense.paymentTypeId? "selected":'' %>>
+            <%=paymentType[i].description%>
+            </option>
+            <% } %>
+        </select>
+          <!-- FILTER: Building Status drop down -->
+        <select name="statusId">
+           <option value="0">--All Status--</option>
+           <% for ( let i = 0; i < status.length; i++ ) { %>
+           <option value="<%=status[i].id%>" <%= status[i].id===expense.statusId? "selected":'' %>>
+            <%=status[i].description%>
+           </option>
+           <% } %>
+        </select>
+        <input type="submit" name="" class="button" value="Submit changes" />    
+      </form>
+    <footer>
+      <p>Footer section</p>
+    </footer>
+  </body>
+</html>

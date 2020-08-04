@@ -10,23 +10,12 @@
     <div id="all-sub-header">
       <h1>Review Your Expenses</h1>
       <nav id="all-nav-bar">
-        <a href="/expenses/new/<%=currentUserId%>">Create expense</a>
-        <a href="/expenses/<%=currentUserId%>/graph">Display board</a>
+        <a href="/expenses/new">Create expense</a>
+        <a href="/expenses/board">Create Board</a>
       </nav>
-      <h1>Cesar Humberto Trevino Barron</h1>
     </div>
     <div id="all-filter-section">
-      <div id="all-filter-header">
-        <p class="medium-field">Start date</p>
-        <p class= "medium-field">End date</p>
-        <p class="medium-field">Account</p>
-        <p class="medium-field">Subaccount</p>
-        <p class="medium-field">Payment Type</p>
-        <p class="medium-field">Status</p>
-        <p class="small-field"></p>
-     </div> 
-      <div id="all-filter-control-group">
-      <form id="all-filter-control" action="/expenses/filter/<%=currentUserId%>">
+      <form action="/expenses/filter/<%=currentUserId%>">
         <input type="date" id="startDate" name="startDate" value="<%=currentStartDate%>"/>
         <input type="date" id="endDate" name="endDate"  value="<%=currentEndDate%>" />
         <!-- FILTER: Building Account drop fown -->
@@ -67,96 +56,69 @@
         </select>
         <input class="button" type="submit" value="Go" />
       </form>   
-      <form id="all-filter-clear" action="/expenses/<%=currentUserId%>">
+      <form action="/expenses/<%=currentUserId%>">
         <input class="button" type="submit" value="Clear filter" />
       </form>
-    </div>
-
+ 
     </div>
     <div id="exp-body-grid">
       <ul>
         <% let suma = 0 %>
-        <div id="row-header-grid">
-          <p class= "small-field" >Expense ID</p>
-          <p class= "small-field">Date</p>
-          <p class="large-field">Description</p>
-          <p class="large-field">Comment</p>
-          <p class="medium-field">Account</p>
-          <p class="medium-field">Subaccount</p>
-          <p class="medium-field">Payment Type</p>
-          <p class="medium-field">Status</p>
-          <p class= "small-field">Amount</p>
-        </div>
         <% expense.forEach((item) => { %>
         <li>
-          <div id="row-grid">
-          <input type="number" name="id" class="small-field number-type" value="<%=item.id%>" disabled />
-          <input type="text" name="date" class= "small-field number-type" value="<%=item.date%>" disabled />
+          <input type="text" name="id" value="<%=item.id%>" disabled />
+          <input type="text" name="date" value="<%=item.date%>" disabled />
           <input
             type="text"
             name="description"
-            class="large-field"
             value="<%=item.description%>"
             disabled
           />
+          <input type="text" name="amount" value="<%=item.amount%>" disabled />
           <input
             type="text"
             name="comment"
-            class="large-field"
             value="<%=item.comment%>"
             disabled
           />
+          <% suma = suma + parseFloat(item.amount,2)%>
           <input
             type="text"
             name="accountDescription"
-            class="medium-field"
             value="<%=item.accountDescription%>"
             disabled
           />
           <input
             type="text"
             name="subaccountDescription"
-            class="medium-field"
             value="<%=item.subaccountDescription%>"
             disabled
           />
           <input
             type="text"
             name="paymentTypeDescription"
-            class="medium-field"
             value="<%=item.paymentTypeDescription%>"
             disabled
           />
           <input
             type="text"
             name="statusDescription"
-            class="medium-field"
             value="<%=item.statusDescription%>"
             disabled
           />
-          <% suma = suma + parseFloat(item.amount,2)%>
-          <% numericAmount = parseFloat(item.amount,2)%>
-          <% console.log(typeof numericAmount, numericAmount) %>
-          <input type="text" name="amount" class= "small-field money-type" value="$<%=numericAmount.toFixed(2)%>" disabled />
-        </div>
-          <div id="control-grid">
-          <!-- Add edit link here  -->
-          <a id="grid-button-edit" href="/expenses/<%=item.id %>/user/<%=currentUserId%>/page/index/edit">Edit</a>
-            <form  action="/expenses/<%= item.id %>/page/display/user/<%=currentUserId%>?_method=DELETE" method="POST">
-            <input id="grid-button-delete" type="submit" value="X" />
+          <form action="/expenses/<%= item.id %>?_method=DELETE" method="POST">
+            <input type="submit" value="DELETE" />
           </form>
-          </div>
+          <!-- Add edit link here  -->
+          <a href="/expenses/<%=item.id %>/edit">Edit</a>
         </li>
         <% });%>
-        <div id="grid-summary">
-          <input
-          type="text"
-          name="expenseSum"
-          class= "small-field money-type"
-          value="$<%=suma%>"
-          disabled
-        />
-        </div>  
+        <input
+        type="text"
+        name="expenseSum"
+        value="<%=suma%>"
+        disabled
+      />
       </ul>
     </div>
     <footer>
