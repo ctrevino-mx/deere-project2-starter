@@ -4,30 +4,45 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>User Profile Page</title>
+    <link rel="stylesheet" href="/app.css" />
   </head>
 
   <body>
-    <h1>Welcome to <%= user.name %>'s Profile Page</h1>
-
-    <form action="/users/profile/<%=user.id%>?_method=PUT" method="POST">
-      Name: <input type="text" name="name" value="<%=user.name%>" /><br />
-      <br />
-      Username:
-      <input type="text" name="username" value="<%=user.username%>" />
-      <br />
-      <br />
-      Password:
-      <input type="text" name="password" value="<%=user.password%>" /><br />
-      <br />
-      <input type="submit" value="Edit Profile" />
-    </form>
-    <br />
-    <form action="/users/<%= user.id %>?_method=DELETE" method="POST">
-      <input type="submit" value="Delete User" />
-    </form>
-
-    <br /><br />
-    <a href="/">Back to Homepage</a>
-    <a href="/expenses/<%= user.id %>">Go to manage expenses</a>
+    <div id="all-header-section">
+      <p>Control-Xpense</p>
+      <h3>The Expense Controller</h3>
+    </div>
+    <div id="all-subheader-section">
+      <h2>Welcome to <%= user.name %>'s Profile Page</h2>
+      <nav id="all-nav-bar">
+        <a href="/">Back to home</a>
+        <a href="/expenses/">Display expenses</a>
+        </nav>
+    </div>
+    <div id="profile-body-frame">
+      <form action="/users/profile/?_method=PUT" method="POST">
+        <div id="profile-body-fields">
+          <label for="name" >Name:</label> 
+          <input type="text" name="name" class= "large-field" value="<%=user.name%>"/></br>
+          <label for="username" >Username:</label> 
+          <input type="text" name="username" class= "large-field" value="<%=user.username%>"/></br>
+          <label for="password" >Password:</label> 
+          <input type="text" name="password" class= "large-field" value="<%=user.password%>"/></br>
+          <br />
+        </div>
+        <div id="profile-body-controls">
+        <input type="submit" class="app-text-button" value="Edit Profile" />
+        <!-- "profile-body-controls" -->
+        </div>
+      </form>
+      <form id="profile-delete-form" action="/users/?_method=DELETE" method="POST">
+        <input type="submit" class="app-text-button" value="Delete User" />
+      </form>
+      <br /><br />
+      <!-- "profile-body-frame" -->
+    </div>
+    <footer>
+      <p>Designed and developed by Cesar Trevino @2020</p>
+    </footer>
   </body>
 </html>

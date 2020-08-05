@@ -3,18 +3,36 @@
   <head>
     <meta charset="utf-8" />
     <title></title>
-    <link rel="stylesheet" href="/css/app.css" />
+    <link rel="stylesheet" href="/app.css" />
   </head>
 
   <body>
-    <h1>Login</h1>
-
-    <form action="/auth/login" method="POST">
-      Username: <input type="text" name="username" /> <br />
-      <br />
-      Password: <input type="text" name="password" /><br />
-      <br />
-      <input type="submit" value="Login" />
-    </form>
+    <div id="all-header-section">
+      <p>Control-Xpense</p>
+      <h3>The Expense Controller</h3>
+    </div>
+    <div id="all-subheader-section">
+      <h2>Login</h2>
+    </div>
+    <div id="login-body-frame">
+      <form action="/auth/login" method="POST">
+        <div id="login-body-fields">
+          <label for="username" >Username:</label> 
+          <input type="text" name="username" class= "large-field"/></br>
+          <label for="password" >Password:</label> 
+          <input type="text" name="password" class= "large-field"/></br>
+          <br />    
+         <!-- login-body-fields -->
+         </div>
+         <div id="login-body-controls">
+        <input class="app-text-button" type="submit" value="Login" />
+         <!-- login-body-controls -->
+        </div>
+      </form>
+      <!-- login-body-frame -->
+    </div>
+    <footer>
+      <p>Designed and developed by Cesar Trevino @2020</p>
+    </footer>
   </body>
 </html>

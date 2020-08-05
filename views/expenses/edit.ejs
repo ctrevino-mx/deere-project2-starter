@@ -13,9 +13,10 @@
     <div id="all-subheader-section">
       <h2>Edit Your Expense</h2>
       <nav id="all-nav-bar">
-        <a href="/expenses/<%=currentUserId%>">Display expenses</a>
-        <a href="/expenses/new/<%=currentUserId%>">Create expense</a>
-        <a href="/expenses/<%=currentUserId%>/graph">Display board</a>
+        <a href="/expenses/">Display expenses</a>
+        <a href="/expenses/new/">Create expense</a>
+        <a href="/expenses/graph">Display board</a>
+        <a href="/auth/logout">Log out</a>
       </nav>
       <!-- all-subheader-section -->
     </div>
@@ -23,7 +24,7 @@
     <div id="edit-body-frame">
       <form
         class="expense-update-form"
-        action="/expenses/<%=expense.id%>/page/<%=triggerPage%>/user/<%=currentUserId%>?_method=PUT"
+        action="/expenses/<%=expense.id%>/page/<%=triggerPage%>?_method=PUT"
         method="POST"
       >
     <div id="edit-body-fields">

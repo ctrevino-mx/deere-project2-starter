@@ -13,8 +13,9 @@
     <div id="all-subheader-section">
       <h2>Create New Expenses</h2>
       <nav id="all-nav-bar">
-        <a href="/expenses/<%=currentUserId%>">Display expenses</a>
+        <a href="/expenses/">Display expenses</a>
         <a href="/expenses/board">Display board</a>
+        <a href="/auth/logout">Log out</a>
       </nav>
     </div>
     <div id="all-new-expense-section">
@@ -31,7 +32,7 @@
         <p class="small-field"></p>
      </div> 
      <div id="all-new-control-group">
-      <form id="all-new-controls" action="/expenses/<%=currentUserId%>" method="POST">
+      <form id="all-new-controls" action="/expenses/" method="POST">
         <input type="date" name="date" class= "medium-field"/>
         <input
           type="text"
@@ -82,7 +83,7 @@
         </select>
         <input id="new-button-create" type="submit" value="+" />
       </form>   
-      <form  action="/expenses/New/<%=currentUserId%>">
+      <form  action="/expenses/New/">
         <input id="new-button-clear" type="submit" value="Clear expense" />
       </form>
       <!-- div all-new-control-group -->
@@ -157,8 +158,8 @@
         </div>
         <div id="control-grid">
           <!-- Add edit link here  -->
-          <a id="grid-button-edit" href="/expenses/<%=item.id %>/user/<%=currentUserId%>/page/new/edit">Edit</a>
-          <form action="/expenses/<%= item.id %>/page/new/user/<%=currentUserId%>?_method=DELETE" method="POST">
+          <a id="grid-button-edit" href="/expenses/<%=item.id %>/page/new/edit">Edit</a>
+          <form action="/expenses/<%= item.id %>/page/new/?_method=DELETE" method="POST">
             <input id="grid-button-delete" type="submit" value="X" />
           </form>
           <!-- control-grid -->
@@ -170,7 +171,7 @@
         type="text"
         name="expenseSum"
         class= "small-field money-type"
-        value="<%=suma%>"
+        value="$<%=suma.toFixed(2)%>"
         disabled
       />
         </div>

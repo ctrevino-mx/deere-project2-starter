@@ -13,8 +13,9 @@
     <div id="all-subheader-section">
       <h2>Review Your Expenses</h2>
       <nav id="all-nav-bar">
-        <a href="/expenses/new/<%=currentUserId%>">Create expense</a>
-        <a href="/expenses/<%=currentUserId%>/graph">Display board</a>
+        <a href="/expenses/new/">Create expense</a>
+        <a href="/expenses/graph">Display board</a>
+        <a href="/auth/logout">Log out</a>
       </nav>
     </div>
     <div id="all-filter-section">
@@ -28,7 +29,7 @@
         <p class="small-field"></p>
      </div>
       <div id="all-filter-control-group">
-      <form id="all-filter-control" action="/expenses/filter/<%=currentUserId%>">
+      <form id="all-filter-control" action="/expenses/filter/">
         <input type="date" id="startDate" name="startDate" value="<%=currentStartDate%>"/>
         <input type="date" id="endDate" name="endDate"  value="<%=currentEndDate%>" />
         <!-- FILTER: Building Account drop fown -->
@@ -69,7 +70,7 @@
         </select>
         <input class="button" type="submit" value="Go" />
       </form>   
-      <form id="all-filter-clear" action="/expenses/<%=currentUserId%>">
+      <form id="all-filter-clear" action="/expenses/">
         <input class="button" type="submit" value="Clear filter" />
       </form>
     </div>
@@ -142,8 +143,8 @@
         </div>
           <div id="control-grid">
           <!-- Add edit link here  -->
-          <a id="grid-button-edit" href="/expenses/<%=item.id %>/user/<%=currentUserId%>/page/index/edit">Edit</a>
-            <form  action="/expenses/<%= item.id %>/page/display/user/<%=currentUserId%>?_method=DELETE" method="POST">
+          <a id="grid-button-edit" href="/expenses/<%=item.id %>/page/index/edit">Edit</a>
+            <form  action="/expenses/<%= item.id %>/page/display?_method=DELETE" method="POST">
             <input id="grid-button-delete" type="submit" value="X" />
           </form>
           </div>

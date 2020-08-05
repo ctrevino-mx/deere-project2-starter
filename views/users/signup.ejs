@@ -3,20 +3,36 @@
   <head>
     <meta charset="utf-8" />
     <title></title>
-    <link rel="stylesheet" href="/css/app.css" />
+    <link rel="stylesheet" href="/app.css" />
   </head>
 
   <body>
-    <h1>Sign Up</h1>
-
-    <form action="/auth/signup" method="POST">
-      Name: <input type="text" name="name" /><br />
-      <br />
-      Username: <input type="text" name="username" /> <br />
-      <br />
-      Password: <input type="text" name="password" /><br />
-      <br />
-      <input type="submit" value="SignUp" />
-    </form>
+    <div id="all-header-section">
+      <p>Control-Xpense</p>
+      <h3>The Expense Controller</h3>
+    </div>
+    <div id="all-subheader-section">
+      <h2>Sign Up</h2>
+    </div>
+    <div id="signup-body-frame">
+      <form action="/auth/signup" method="POST">
+        <div id="signup-body-fields">
+          <label for="name">Name:</label>
+          <input type="text" name="name" class="large-field" /><br />
+          <label for="username">Username:</label>
+          <input type="text" name="username" class="large-field" /><br />
+          <label for="password">Password:</label>
+          <input type="text" name="password" class="large-field" /><br />
+          <br />
+        </div>
+        <div id="signup-body-controls">
+          <input class="app-text-button" type="submit" value="SignUp" />
+        </div>
+      </form>
+      <!-- signup-body-frame -->
+    </div>
+    <footer>
+      <p>Designed and developed by Cesar Trevino @2020</p>
+    </footer>
   </body>
 </html>

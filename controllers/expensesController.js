@@ -14,12 +14,13 @@ const Op = require("../models").Sequelize.Op;
 
 // FILTER ROUTE - FILTER THE EXPENSES BASED ON DEFINED CRITERIA
 // router.get("/filter/?", async (req, res) => {
-router.get("/filter/:id/?", async (req, res) => {
+router.get("/filter/?", async (req, res) => {
   let whereClause = {};
   let isThereWhere = false;
   let query = "";
   console.log(
-    "###################### HITTING FILTER ################################"
+    "###################### HITTING FILTER ################################",
+    req.user.id
   );
 
   query =
@@ -36,7 +37,7 @@ router.get("/filter/:id/?", async (req, res) => {
     'INNER JOIN "PaymentTypes" ON ("Expenses"."paymentTypeId" = "PaymentTypes"."id")' +
     'INNER JOIN "Statuses" ON ("Expenses"."statusId" = "Statuses"."id")' +
     'WHERE "Expenses"."userId" = ' +
-    req.params.id;
+    req.user.id;
 
   isThereWhere = true;
   if (req.query.accountId > 0) {
@@ -69,7 +70,7 @@ router.get("/filter/:id/?", async (req, res) => {
     query += ' AND "Expenses"."date" <= ' + "'" + req.query.endDate + "'";
   }
 
-  query += ' ORDER BY "Expenses"."date" DESC';
+  query += ' ORDER BY "Expenses"."date" DESC, "Expenses"."id" DESC';
 
   console.log(
     "====================== Hello there ========================",
@@ -102,16 +103,17 @@ router.get("/filter/:id/?", async (req, res) => {
     currentStatusId: parseInt(req.query.statusId),
     currentStartDate: req.query.startDate,
     currentEndDate: req.query.endDate,
-    currentUserId: req.params.id,
+    // currentUserId: req.user.id,
   });
 });
 
 // ADD THE ROUTES HERE
 // INDEX ROUTE - GET ALL THE EXPENSES
-router.get("/:id", async (req, res) => {
+router.get("/", async (req, res) => {
   let query = "";
   console.log(
-    "###################### HITTING GET/ID ################################"
+    "###################### HITTING GET/ID ################################",
+    req.user.id
   );
 
   query =
@@ -128,8 +130,8 @@ router.get("/:id", async (req, res) => {
     'INNER JOIN "PaymentTypes" ON ("Expenses"."paymentTypeId" = "PaymentTypes"."id")' +
     'INNER JOIN "Statuses" ON ("Expenses"."statusId" = "Statuses"."id")' +
     'WHERE "Expenses"."userId" = ' +
-    req.params.id;
-  query += ' ORDER BY "Expenses"."date" DESC';
+    req.user.id;
+  query += ' ORDER BY "Expenses"."date" DESC, "Expenses"."id" DESC';
   console.log("======================== QUERY ========================", query);
   const completeExpenses = await sequelize.query(query, {
     type: QueryTypes.SELECT,
@@ -156,28 +158,27 @@ router.get("/:id", async (req, res) => {
     currentStatusId: 0,
     currentStartDate: "",
     currentEndDate: "",
-    currentUserId: req.params.id,
+    // currentUserId: req.user.id,
   });
 });
 
 //////////////////////////////////////////////////////////////////////////////////
 // NEW ROUTE - SEND EMPTY FORM TO THE USER TO CREATE A NEW EXPENSE
-// Get all the expenses created today for that specific user
+// Get the last 5 expenses created for that specific user
 // Get the info to populate the drop boxes
-// Render the new form to create the expenses displaying the expenses created today
+// Render the new form to create the expenses displaying the 5 last expenses
 //////////////////////////////////////////////////////////////////////////////////
-router.get("/new/:id", async (req, res) => {
-  let myDate = new Date();
+router.get("/new", async (req, res) => {
   console.log(
     "###################### HITTING NEW/ID ################################",
-    myDate
+    req.user.id
   );
 
   const todayExpenses = await ExpenseModel.findAll({
     where: {
-      userId: req.params.id,
+      userId: req.user.id,
     },
-    limit: 5,
+    limit: 10,
     include: [
       AccountModel,
       SubaccountModel,
@@ -208,29 +209,32 @@ router.get("/new/:id", async (req, res) => {
     currentStatusId: 0,
     currentStartDate: "",
     currentEndDate: "",
-    currentUserId: req.params.id,
+    // currentUserId: req.user.id,
   });
 });
 
 // CREATE A NEW EXPENSE
 // After creating the expense display renders the new page to keep creating expenses
-router.post("/:id", (req, res) => {
+router.post("/", (req, res) => {
   console.log(
-    "###################### HITTING POST/ID ################################"
+    "###################### HITTING POST/ID ################################",
+    req.user.id
   );
-  req.body.userId = req.params.id;
+  req.body.userId = req.user.id;
   ExpenseModel.create(req.body).then((newExpense) => {
-    res.redirect(`/expenses/new/${req.params.id}`);
+    res.redirect("/expenses/new/");
   });
 });
 
 // EDIT ROUTE
-router.get("/:id/user/:userid/page/:pagename/edit", async (req, res) => {
+// router.get("/:id/user/:userid/page/:pagename/edit", async (req, res) => {
+router.get("/:id/page/:pagename/edit", async (req, res) => {
   console.log(
     "###################### HITTING GET/ID/EDIT ################################",
     req.params.id,
-    req.params.userid,
-    req.params.pagename
+    // req.params.userid,
+    req.params.pagename,
+    req.user.id
   );
   const allAccounts = await AccountModel.findAll();
   const allSubaccounts = await SubaccountModel.findAll();
@@ -240,24 +244,26 @@ router.get("/:id/user/:userid/page/:pagename/edit", async (req, res) => {
   ExpenseModel.findByPk(req.params.id).then((foundExpense) => {
     res.render("expenses/edit.ejs", {
       expense: foundExpense,
-      currentUserId: 0,
+      // currentUserId: 0,
       account: allAccounts,
       subaccount: allSubaccounts,
       paymentType: allPaymentTypes,
       status: allStatuses,
-      currentUserId: req.params.userid,
+      // currentUserId: req.params.userid,
+      // currentUserId: req.user.id,
       triggerPage: req.params.pagename,
     });
   });
 });
 
 // PUT ROUTE - UPDATE THE SPECIFIC EXPENSE
-router.put("/:id/page/:pagename/user/:userid", (req, res) => {
+// router.put("/:id/page/:pagename/user/:userid", (req, res) => {
+router.put("/:id/page/:pagename", (req, res) => {
   console.log(
     "###################### HITTING PUT/ID ################################",
     req.params.id,
     req.params.pagename,
-    req.params.userid
+    req.user.userid
   );
 
   ExpenseModel.update(req.body, {
@@ -265,35 +271,36 @@ router.put("/:id/page/:pagename/user/:userid", (req, res) => {
     returning: true,
   }).then((updatedExpense) => {
     if (req.params.pagename === "index") {
-      res.redirect(`/expenses/${req.params.userid}`);
+      res.redirect("/expenses/");
     }
     if (req.params.pagename === "new") {
-      res.redirect(`/expenses/new/${req.params.userid}`);
+      res.redirect("/expenses/new/");
     }
   });
 });
 
 // DELETE ROUTE - DELETE AN EXPENSE
-router.delete("/:id/page/:pagename/user/:userid", (req, res) => {
+router.delete("/:id/page/:pagename", (req, res) => {
   console.log(
     "###################### HITTING DELETE ################################",
-    req.params.pagename
+    req.params.pagename,
+    req.user.id
   );
   ExpenseModel.destroy({ where: { id: req.params.id } }).then(() => {
     if (req.params.pagename === "display") {
-      res.redirect(`/expenses/${req.params.userid}`);
+      res.redirect("/expenses/");
     }
     if (req.params.pagename === "new") {
-      res.redirect(`/expenses/new/${req.params.userid}`);
+      res.redirect("/expenses/new/");
     }
   });
 });
 
 // GRAPH ROUTE - DELETE AN EXPENSE
-router.get("/:userid/graph", (req, res) => {
+router.get("/graph", (req, res) => {
   console.log(
     "###################### HITTING GRAPH ################################",
-    req.params.userid
+    req.user.userid
   );
   myData = [
     ["Task", "Hours per Day"],
