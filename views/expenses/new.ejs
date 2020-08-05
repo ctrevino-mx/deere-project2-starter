@@ -6,25 +6,43 @@
     <link rel="stylesheet" href="/app.css" />
   </head>
   <body>
-    <header id="exp-header">Header Here</header>
-    <div id="all-sub-header">
-      <h1>Create New Expenses</h1>
+    <div id="all-header-section">
+      <p> Control-Xpense </p>
+      <h3> The Expense Controller </h3>
+    </div>
+    <div id="all-subheader-section">
+      <h2>Create New Expenses</h2>
       <nav id="all-nav-bar">
         <a href="/expenses/<%=currentUserId%>">Display expenses</a>
-        <a href="/expenses/board">Expense board</a>
+        <a href="/expenses/board">Display board</a>
       </nav>
     </div>
-    <div id="all-filter-section">
-      <form action="/expenses/<%=currentUserId%>" method="POST">
-        <input type="date" name="date" />
+    <div id="all-new-expense-section">
+      <div id="all-new-expense-header">
+        <p class="medium-field">Date</p>
+        <p class= "large-field">Description</p>
+        <p class="small-field">Amount</p>
+        <p class="large-field">Note</p>
+        <p class="medium-field">Account</p>
+        <p class="medium-field">Subaccount</p>
+        <p class="madium-field">Payment Type</p>
+        <p class="madium-field">Status</p>
+        <p class="small-field"></p>
+        <p class="small-field"></p>
+     </div> 
+     <div id="all-new-control-group">
+      <form id="all-new-controls" action="/expenses/<%=currentUserId%>" method="POST">
+        <input type="date" name="date" class= "medium-field"/>
         <input
           type="text"
           name="description"
+          class="large-field"
         />
-        <input type="text" name="amount" />
+        <input type="number" name="amount" class= "small-field" />
         <input
           type="text"
           name="comment"
+          class="large-field"
         />
         <!-- FILTER: Building Account drop fown -->
         <select name="accountId">
@@ -62,74 +80,104 @@
           </option>
           <% } %>
         </select>
-        <input class="button" type="submit" value="Create expense" />
+        <input id="new-button-create" type="submit" value="+" />
       </form>   
-      <form action="/expenses/New/<%=currentUserId%>">
-        <input class="button" type="submit" value="Clear expense" />
+      <form  action="/expenses/New/<%=currentUserId%>">
+        <input id="new-button-clear" type="submit" value="Clear expense" />
       </form>
+      <!-- div all-new-control-group -->
+      </div>
+      <!-- div all-new-expense-section -->
     </div>
     <div id="exp-body-grid">
       <ul>
         <% let suma = 0 %>
+        <div id="row-header-grid">
+          <p class= "small-field" >Expense ID</p>
+          <p class= "medium-field">Date</p>
+          <p class="large-field">Description</p>
+          <p class="large-field">Note</p>
+          <p class="medium-field">Account</p>
+          <p class="medium-field">Subaccount</p>
+          <p class="medium-field">Payment Type</p>
+          <p class="medium-field">Status</p>
+          <p class= "small-field">Amount</p>
+        </div>
         <% expense.forEach((item) => { %>
         <li>
-          <input type="text" name="grid-id" value="<%=item.id%>" disabled />
-          <input type="text" name="grid-date" value="<%=item.date%>" disabled />
-          <input
+          <div id="row-grid">
+            <input type="number" name="grid-id" class="small-field number-type" value="<%=item.id%>" disabled />
+            <input type="date" name="grid-date" class= "medium-field number-type" value="<%=item.date%>" disabled />
+            <input
             type="text"
             name="grid-description"
+            class="large-field"
             value="<%=item.description%>"
             disabled
           />
-          <input type="text" name="grid-amount" value="<%=item.amount%>" disabled />
           <input
             type="text"
             name="grid-comment"
+            class="large-field"
             value="<%=item.comment%>"
             disabled
           />
-          <% suma = suma + parseFloat(item.amount,2)%>
           <input
             type="text"
             name="grid-accountDescription"
+            class="medium-field"
             value="<%=item.Account.description%>"
             disabled
           />
           <input
             type="text"
             name="grid-subaccountDescription"
+            class="medium-field"
             value="<%=item.Subaccount.description%>"
             disabled
           />
           <input
             type="text"
             name="grid-paymentTypeDescription"
+            class="medium-field"
             value="<%=item.PaymentType.description%>"
             disabled
           />
           <input
             type="text"
             name="grid-statusDescription"
+            class="medium-field"
             value="<%=item.Status.description%>"
             disabled
           />
-          <form action="/expenses/<%= item.id %>/page/new/user/<%=currentUserId%>?_method=DELETE" method="POST">
-            <input type="submit" value="DELETE" />
-          </form>
+          <% suma = suma + parseFloat(item.amount,2)%>
+          <% numericAmount = parseFloat(item.amount,2)%>
+          <input type="text" name="grid-amount" class= "small-field money-type" value="$<%=numericAmount.toFixed(2)%>" disabled />
+          <!-- row-grid -->
+        </div>
+        <div id="control-grid">
           <!-- Add edit link here  -->
-          <a href="/expenses/<%=item.id %>/user/<%=currentUserId%>/page/new/edit">Edit</a>
+          <a id="grid-button-edit" href="/expenses/<%=item.id %>/user/<%=currentUserId%>/page/new/edit">Edit</a>
+          <form action="/expenses/<%= item.id %>/page/new/user/<%=currentUserId%>?_method=DELETE" method="POST">
+            <input id="grid-button-delete" type="submit" value="X" />
+          </form>
+          <!-- control-grid -->
+          </div>
         </li>
         <% });%>
+        <div id="grid-summary">
         <input
         type="text"
         name="expenseSum"
+        class= "small-field money-type"
         value="<%=suma%>"
         disabled
       />
+        </div>
       </ul>
     </div>
     <footer>
-      <p>Footer section</p>
+      <p>Designed and developed by Cesar Trevino @2020</p>
     </footer>
   </body>
 </html>

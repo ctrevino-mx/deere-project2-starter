@@ -26,7 +26,7 @@
         <p class="medium-field">Payment Type</p>
         <p class="medium-field">Status</p>
         <p class="small-field"></p>
-     </div> 
+     </div>
       <div id="all-filter-control-group">
       <form id="all-filter-control" action="/expenses/filter/<%=currentUserId%>">
         <input type="date" id="startDate" name="startDate" value="<%=currentStartDate%>"/>
@@ -80,7 +80,7 @@
         <% let suma = 0 %>
         <div id="row-header-grid">
           <p class= "small-field" >Expense ID</p>
-          <p class= "small-field">Date</p>
+          <p class= "medium-field">Date</p>
           <p class="large-field">Description</p>
           <p class="large-field">Comment</p>
           <p class="medium-field">Account</p>
@@ -93,7 +93,7 @@
         <li>
           <div id="row-grid">
           <input type="number" name="id" class="small-field number-type" value="<%=item.id%>" disabled />
-          <input type="text" name="date" class= "small-field number-type" value="<%=item.date%>" disabled />
+          <input type="date" name="date" class= "medium-field number-type" value="<%=item.date%>" disabled />
           <input
             type="text"
             name="description"
@@ -138,7 +138,6 @@
           />
           <% suma = suma + parseFloat(item.amount,2)%>
           <% numericAmount = parseFloat(item.amount,2)%>
-          <% console.log(typeof numericAmount, numericAmount) %>
           <input type="text" name="amount" class= "small-field money-type" value="$<%=numericAmount.toFixed(2)%>" disabled />
         </div>
           <div id="control-grid">
@@ -155,7 +154,7 @@
           type="text"
           name="expenseSum"
           class= "small-field money-type"
-          value="$<%=suma%>"
+          value="$<%=suma.toFixed(2)%>"
           disabled
         />
         </div>  

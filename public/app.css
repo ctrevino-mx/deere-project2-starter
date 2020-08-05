@@ -56,6 +56,7 @@ body {
   font-size: 14px;
 }
 
+/* STYLING FOR INDEX PAGE */
 #all-filter-section {
   grid-row: 3;
   grid-column: span 3;
@@ -99,6 +100,7 @@ body {
 #all-filter-control-group {
   display: flex;
 }
+
 #exp-body-grid {
   grid-row: 4;
   grid-column: span 3;
@@ -106,10 +108,11 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  /* background-color: darkorange; */
+  /* background-color: rgb(138, 135, 131); */
   overflow: scroll;
   border-style: ridge;
 }
+
 #row-header-grid {
   width: 1250px;
   height: 15px;
@@ -184,6 +187,94 @@ body {
   background-color: rgb(222, 226, 186);
 }
 
+/* STYLING FOR NEW PAGE */
+#all-new-expense-section {
+  grid-row: 3;
+  grid-column: span 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+  background-color: #f2cc5b;
+  border: 1px solid black;
+
+  /* background-color: darkgreen; */
+}
+#all-new-expense-header {
+  width: 1335px;
+  height: 15px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: flex-start;
+  border: 1px solid black;
+}
+
+#all-new-expense-header p {
+  text-align: center;
+  font-size: 11px;
+  font-weight: bold;
+  margin-top: 0px;
+}
+
+#all-new-control-group {
+  display: flex;
+}
+
+#all-new-controls {
+  width: 1250px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  border: 1px solid red;
+}
+
+#new-button-clear {
+  height: 20px;
+  display: flex;
+  align-items: center;
+  display: inline-block;
+}
+
+#new-button-create {
+  background-color: #149903;
+  color: white;
+  width: 22px;
+  font-size: 16px;
+  text-align: center;
+  border-radius: 10px;
+  padding-left: 5px;
+  cursor: pointer;
+  margin-left: 4px;
+}
+
+/* STYLING FOR EDIT */
+#edit-body-frame {
+  grid-row: 4;
+  grid-column: span 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  /* background-color: darkorange; */
+  overflow: scroll;
+  border-style: ridge;
+}
+
+#edit-body-fields label {
+  width: 100px;
+  display: inline-block;
+  font-size: 14px;
+}
+
+#edit-body-controls {
+  display: flex;
+  flex-direction: rows;
+  justify-content: center;
+}
+
+/* STYLING FOR FOOTER */
 footer {
   grid-row: 5;
   grid-column: span 3;
@@ -191,11 +282,10 @@ footer {
   flex-direction: row;
   align-items: center;
   justify-content: flex-end;
-  background-color: #7c1608;
+  background-color: #df7c0c;
   font-size: 15px;
   color: #ffffff;
 }
-
 /* GENERAL DEFINITIONS */
 .small-field {
   width: 80px;

@@ -6,69 +6,90 @@
     <link rel="stylesheet" href="/app.css" />
   </head>
   <body>
-    <header id="exp-header">Header Here</header>
-    <div id="all-sub-header">
-      <h1>Edit Your Expenses</h1>
+    <div id="all-header-section">
+      <p> Control-Xpense </p>
+      <h3> The Expense Controller </h3>
+    </div>
+    <div id="all-subheader-section">
+      <h2>Edit Your Expense</h2>
       <nav id="all-nav-bar">
+        <a href="/expenses/<%=currentUserId%>">Display expenses</a>
         <a href="/expenses/new/<%=currentUserId%>">Create expense</a>
-        <a href="/expenses/board">View Board</a>
+        <a href="/expenses/<%=currentUserId%>/graph">Display board</a>
       </nav>
+      <!-- all-subheader-section -->
     </div>
     <div id="all-filter-section"></div>
-    <div id="exp-body-grid">
+    <div id="edit-body-frame">
       <form
         class="expense-update-form"
         action="/expenses/<%=expense.id%>/page/<%=triggerPage%>/user/<%=currentUserId%>?_method=PUT"
         method="POST"
       >
-        <input type="date" name="date" value="<%=expense.date%>" />
-        <input type="text" name="description" value="<%=expense.description%>"/>
-        <input type="text" name="amount" value="<%=expense.amount%>"/>
-        <input
+    <div id="edit-body-fields">
+      <label for="id" >Expense ID:</label> 
+      <input type="number" name="id" class= "small-field number-type" value="<%=expense.id%>" disabled/></br>
+      <label for="date">Date:</label> 
+      <input type="date" name="date" class= "medium-field number-type" value="<%=expense.date%>" /></br>
+      <label for="description">Description:</label> 
+      <input type="text" name="description" class= "large-field" value="<%=expense.description%>"/></br>
+      <label for="amount">Amount:</label> 
+      <input type="number" name="amount" class= "small-field number-type" value="<%=expense.amount%>"/></br>
+      <label for="comment">Note:</label> 
+      <input
           type="text"
           name="comment"
+          class= "large-field"
           value="<%=expense.comment%>"
-        />
+        /></br>
+        <label for="accountId">Account:</label> 
         <!-- FILTER: Building Account drop fown -->
-        <select name="accountId">
+        <select name="accountId" class= "medium-field">
             <option value="0">--All accounts--</option>
             <% for ( let i = 0; i < account.length; i++ ) { %>
             <option value="<%=account[i].id%>" <%= account[i].id===expense.accountId? "selected":'' %>>
               <%=account[i].description%>
             </option>
             <% } %>
-          </select>      
+          </select></br>      
+          <label for="subaccountId">Subaccount:</label> 
           <!-- FILTER: Building Subaccount drop down -->
-          <select name="subaccountId">
+          <select name="subaccountId" class= "medium-field">
             <option value="0">--All Subaccounts--</option>
             <% for ( let i = 0; i < subaccount.length; i++ ) { %>
             <option value="<%=subaccount[i].id%>" <%= subaccount[i].id===expense.subaccountId? "selected":'' %>>
               <%=subaccount[i].description%>
             </option>
             <% } %>
-          </select>
+          </select></br>          
         <!-- FILTER: Building Payment Type drop down -->
-        <select name="paymentTypeId">
+        <label for="paymentTypeId">Payment Type:</label> 
+        <select name="paymentTypeId" class= "medium-field">
             <option value="0">--All Types--</option>
             <% for ( let i = 0; i < paymentType.length; i++ ) { %>
             <option value="<%=paymentType[i].id%>" <%= paymentType[i].id===expense.paymentTypeId? "selected":'' %>>
             <%=paymentType[i].description%>
             </option>
             <% } %>
-        </select>
+        </select></br>
           <!-- FILTER: Building Status drop down -->
-        <select name="statusId">
+          <label for="statusId">Status:</label> 
+        <select name="statusId" class= "medium-field">
            <option value="0">--All Status--</option>
            <% for ( let i = 0; i < status.length; i++ ) { %>
            <option value="<%=status[i].id%>" <%= status[i].id===expense.statusId? "selected":'' %>>
             <%=status[i].description%>
            </option>
            <% } %>
-        </select>
-        <input type="submit" name="" class="button" value="Submit changes" />    
+        </select></br></br>
+      </div>
+        <div id="edit-body-controls">
+        <input type="submit" name="" class="button" value="Submit changes" />  
+        </div>  
       </form>
+      </div>
     <footer>
-      <p>Footer section</p>
+      <p>Designed and developed by Cesar Trevino @2020</p>
     </footer>
   </body>
 </html>
