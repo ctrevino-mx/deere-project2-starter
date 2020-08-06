@@ -296,23 +296,126 @@ router.delete("/:id/page/:pagename", (req, res) => {
   });
 });
 
-// GRAPH ROUTE - DELETE AN EXPENSE
-router.get("/graph", (req, res) => {
+// GRAPH ROUTE - SELECT THE INFORMATION FOR THE GRAPH AND RENDER
+router.get("/board", (req, res) => {
+  const dataOption = [
+    [1, "Account"],
+    [2, "Subaccount"],
+    [3, "Payment Type"],
+    [4, "Status"],
+  ];
   console.log(
     "###################### HITTING GRAPH ################################",
     req.user.userid
   );
-  myData = [
-    ["Task", "Hours per Day"],
-    ["Work", 11],
-    ["Eat", 2],
-    ["Commute", 2],
-    ["Watch TV", 2],
-    ["Sleep", 7],
-  ];
-  console.log(myData);
   res.render("expenses/graph.ejs", {
-    dataSeries: myData,
+    dataOption: dataOption,
+    dataSeries: [],
+  });
+});
+
+router.get("/graph", async (req, res) => {
+  let query = "";
+  let groupBy = "";
+  let orderBy = "";
+  let graphData = [];
+  let dataElement = [];
+  const dataOption = [
+    [1, "Account"],
+    [2, "Subaccount"],
+    [3, "Payment Type"],
+    [4, "Status"],
+  ];
+
+  console.log(
+    "HITTTTTTTTIIIIIINNNNNNNGGGGGG THE GRAPHIC",
+    req.query.optionId,
+    req.query.startDate,
+    req.query.endDate,
+    req.user.id
+  );
+  query =
+    'SELECT SUM("Expenses"."amount") AS "totalAmount",' + '"Expenses"."userId"';
+  groupBy = 'GROUP BY "Expenses"."userId"';
+
+  if (parseInt(req.query.optionId) === 1) {
+    query +=
+      ',"Expenses"."accountId", "Accounts"."description" AS "description"';
+    groupBy += ', "Expenses"."accountId", "Accounts"."description"';
+    orderBy = ' ORDER BY "Accounts"."description" ASC';
+  }
+  if (parseInt(req.query.optionId) === 2) {
+    query +=
+      ',"Expenses"."subaccountId", "Subaccounts"."description" AS "description"';
+    groupBy += ', "Expenses"."subaccountId", "Subaccounts"."description"';
+    orderBy = ' ORDER BY "Subaccounts"."description" ASC';
+  }
+  if (parseInt(req.query.optionId) === 3) {
+    query +=
+      ',"Expenses"."paymentTypeId", "PaymentTypes"."description" AS "description"';
+    groupBy += ', "Expenses"."paymentTypeId", "PaymentTypes"."description"';
+    orderBy = ' ORDER BY "PaymentTypes"."description" ASC';
+  }
+  if (parseInt(req.query.optionId) === 4) {
+    query +=
+      ',"Expenses"."statusId", "Statuses"."description" AS "description"';
+    groupBy += ', "Expenses"."statusId", "Statuses"."description"';
+    orderBy = ' ORDER BY "Statuses"."description" ASC';
+  }
+  query +=
+    ' FROM "Expenses" ' +
+    'INNER JOIN "Users" ON ("Expenses"."userId" = "Users"."id") ' +
+    'INNER JOIN "Accounts" ON ("Expenses"."accountId" = "Accounts"."id") ' +
+    'INNER JOIN "Subaccounts" ON ("Expenses"."subaccountId" = "Subaccounts"."id") ' +
+    'INNER JOIN "PaymentTypes" ON ("Expenses"."paymentTypeId" = "PaymentTypes"."id") ' +
+    'INNER JOIN "Statuses" ON ("Expenses"."statusId" = "Statuses"."id") ' +
+    'WHERE "Expenses"."userId" = ' +
+    req.user.id;
+
+  if (req.query.startDate && req.query.endDate) {
+    query +=
+      ' AND ("Expenses"."date" >= ' +
+      "'" +
+      req.query.startDate +
+      "'" +
+      ' AND "Expenses"."date" <= ' +
+      "'" +
+      req.query.endDate +
+      "')";
+  } else if (req.query.startDate) {
+    query += ' AND "Expenses"."date" >= ' + "'" + req.query.startDate + "'";
+  } else if (req.query.endDate) {
+    query += ' AND "Expenses"."date" <= ' + "'" + req.query.endDate + "'";
+  }
+  // query += " ";
+  query += " " + groupBy;
+  query += " " + orderBy;
+
+  console.log(query);
+
+  const filteredExpenses = await sequelize.query(query, {
+    type: QueryTypes.SELECT,
+  });
+
+  console.log(
+    "====================== FILTERED EXPENSES ===============================",
+    filteredExpenses
+  );
+
+  dataElement[0] = "Concept";
+  dataElement[1] = "Amount";
+  graphData.push(dataElement);
+  dataElement = [];
+  filteredExpenses.forEach((item) => {
+    dataElement[0] = item.description;
+    dataElement[1] = parseInt(item.totalAmount);
+    graphData.push(dataElement);
+    dataElement = [];
+  });
+  console.log(graphData);
+  res.render("expenses/graph.ejs", {
+    dataOption: dataOption,
+    dataSeries: graphData,
   });
 });
 

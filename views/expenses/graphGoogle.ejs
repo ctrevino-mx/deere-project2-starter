@@ -1,0 +1,51 @@
+<html>
+  <head>
+    <script
+      type="text/javascript"
+      src="https://www.gstatic.com/charts/loader.js"
+    ></script>
+    <script type="text/javascript">
+      google.charts.load("current", { packages: ["corechart"] });
+      google.charts.setOnLoadCallback(drawChart);
+
+      function drawChart() {
+        let x = "<%= dataSeries %>";
+        let array = x.split(",");
+        let dataList = [];
+        let dataElement = [];
+        dataElement[0] = array[0];
+        dataElement[1] = array[1];
+        console.log("DATA ELEMENT INITIAL", dataElement);
+        dataList.push(dataElement);
+        dataElement = [];
+        for (let i = 2; i < array.length; i++) {
+          if (i % 2 == 0) {
+            console.log(array[i]);
+            dataElement[0] = array[i];
+          } else {
+            console.log(array[i]);
+            dataElement[1] = parseInt(array[i]);
+            dataList.push(dataElement);
+            dataElement = [];
+          }
+        }
+        console.log(dataList);
+
+        var data = google.visualization.arrayToDataTable(dataList);
+
+        var options = {
+          title: "My Daily Activities",
+        };
+
+        var chart = new google.visualization.PieChart(
+          document.getElementById("piechart")
+        );
+
+        chart.draw(data, options);
+      }
+    </script>
+  </head>
+  <body>
+    <div id="piechart" style="width: 900px; height: 500px;"></div>
+  </body>
+</html>

@@ -1,31 +1,111 @@
+<!DOCTYPE html>
 <html>
   <head>
+    <meta charset="utf-8" />
+    <title></title>
+    <link rel="stylesheet" href="/app.css" />
     <script
       type="text/javascript"
       src="https://www.gstatic.com/charts/loader.js"
     ></script>
-  </head>
-  <body>
-    <div id="piechart" style="width: 900px; height: 500px;"></div>
     <script type="text/javascript">
       google.charts.load("current", { packages: ["corechart"] });
       google.charts.setOnLoadCallback(drawChart);
-      console.log(dataSeries);
-      let dataSeries2 = [];
-      dataSeries2 = dataSeries;
 
       function drawChart() {
-        var data = google.visualization.arrayToDataTable(dataSeries);
-        var options = {
-          title: "My Daily Activities",
-        };
+        let dataRow = "<%= dataSeries %>";
+        console.log("ESTE ES EL VALOR DE X", dataRow);
+        if (dataRow) {
+          console.log("IT IS SAFE TO MOVE FORWARD...");
+          let array = dataRow.split(",");
+          let dataList = [];
+          let dataElement = [];
+          dataElement[0] = array[0];
+          dataElement[1] = array[1];
+          console.log("DATA ELEMENT INITIAL", dataElement);
+          dataList.push(dataElement);
+          dataElement = [];
+          for (let i = 2; i < array.length; i++) {
+            if (i % 2 == 0) {
+              console.log(array[i]);
+              dataElement[0] = array[i];
+            } else {
+              console.log(array[i]);
+              dataElement[1] = parseInt(array[i]);
+              dataList.push(dataElement);
+              dataElement = [];
+            }
+          }
+          console.log(dataList);
+          var data = google.visualization.arrayToDataTable(dataList);
 
-        var chart = new google.visualization.PieChart(
-          document.getElementById("piechart")
-        );
+          var options = {
+            title: "Expense Graph",
+            is3D: true,
+            pieSliceText: "label",
+          };
 
-        chart.draw(data, options);
+          var chart = new google.visualization.PieChart(
+            document.getElementById("graph-body")
+          );
+
+          chart.draw(data, options);
+        }
       }
     </script>
+  </head>
+  <body>
+    <div id="all-header-section">
+      <p>Control-Xpense</p>
+      <h3>The Expense Controller</h3>
+      <!-- all-header-section -->
+    </div>
+    <div id="all-subheader-section">
+      <h2>Analyze Your Expenses</h2>
+      <nav id="all-nav-bar">
+        <a href="/expenses/new/">Create expense</a>
+        <a href="/expenses/">Display expenses</a>
+        <a href="/auth/logout">Log out</a>
+      </nav>
+      <!-- all-subheader-section -->
+    </div>
+    <div id="graph-filter-section">
+      <div id="graph-filter-header">
+        <label class="medium-field">Start date</label>
+        <label class="medium-field">End date</label>
+        <label class="medium-field">Options</label>
+        <label class="xsmall-field"></label>
+
+        <!-- graph-filter-header -->
+      </div>
+      <form id="graph-filter-control" action="/expenses/graph">
+        <input
+          type="date"
+          id="startDate"
+          class="medium-field"
+          name="startDate"
+        />
+        <input type="date" id="endDate" class="medium-field" name="endDate" />
+        <!-- FILTER: Building option drop down -->
+        <select name="optionId" class="medium-field">
+          <option value="0">--All options--</option>
+          <% for ( let i = 0; i < dataOption.length; i++ ) { %>
+          <option value="<%=dataOption[i][0]%>">
+            <%=dataOption[i][1]%>
+          </option>
+          <% } %>
+        </select>
+        <input class="app-text-go-button" type="submit" value="Go" />
+      </form>
+      <form id="graph-filter-clear" action="/expenses/board">
+        <input class="app-text-button" type="submit" value="Clear options" />
+      </form>
+      <!-- graph-filter-section -->
+    </div>
+    <!-- style="width: 400px; height: 400px;" -->
+    <div id="graph-body"></div>
+    <footer>
+      <p>Designed and developed by Cesar Trevino @2020</p>
+    </footer>
   </body>
 </html>
