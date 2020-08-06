@@ -14,7 +14,8 @@
 
       function drawChart() {
         let dataRow = "<%= dataSeries %>";
-        console.log("ESTE ES EL VALOR DE X", dataRow);
+        let graphType = "<%= graphType %>";
+        console.log("ESTE ES EL VALOR DE X", graphType);
         if (dataRow) {
           console.log("IT IS SAFE TO MOVE FORWARD...");
           let array = dataRow.split(",");
@@ -39,15 +40,21 @@
           console.log(dataList);
           var data = google.visualization.arrayToDataTable(dataList);
 
-          var options = {
-            title: "Expense Graph",
-            is3D: true,
-            pieSliceText: "label",
-          };
+          if (graphType === "Pie") {
+            var options = {
+              title: "Expense Graph",
+              is3D: true,
+              pieSliceText: "label",
+            };
 
-          var chart = new google.visualization.PieChart(
-            document.getElementById("graph-body")
-          );
+            var chart = new google.visualization.PieChart(
+              document.getElementById("graph-body")
+            );
+          } else {
+            var chart = new google.visualization.LineChart(
+              document.getElementById("graph-body")
+            );
+          }
 
           chart.draw(data, options);
         }

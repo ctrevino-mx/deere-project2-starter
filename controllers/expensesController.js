@@ -304,6 +304,7 @@ router.get("/board", (req, res) => {
     [3, "Payment Type"],
     [4, "Status"],
   ];
+  let graphType = "";
   console.log(
     "###################### HITTING GRAPH ################################",
     req.user.userid
@@ -311,6 +312,7 @@ router.get("/board", (req, res) => {
   res.render("expenses/graph.ejs", {
     dataOption: dataOption,
     dataSeries: [],
+    graphType: "",
   });
 });
 
@@ -320,6 +322,7 @@ router.get("/graph", async (req, res) => {
   let orderBy = "";
   let graphData = [];
   let dataElement = [];
+  let graphType = "Pie";
   const dataOption = [
     [1, "Account"],
     [2, "Subaccount"],
@@ -337,6 +340,8 @@ router.get("/graph", async (req, res) => {
   query =
     'SELECT SUM("Expenses"."amount") AS "totalAmount",' + '"Expenses"."userId"';
   groupBy = 'GROUP BY "Expenses"."userId"';
+
+  console.log(req.query.optionId);
 
   if (parseInt(req.query.optionId) === 1) {
     query +=
@@ -362,6 +367,13 @@ router.get("/graph", async (req, res) => {
     groupBy += ', "Expenses"."statusId", "Statuses"."description"';
     orderBy = ' ORDER BY "Statuses"."description" ASC';
   }
+  if (parseInt(req.query.optionId) === 0) {
+    query += ',"Expenses"."date" AS "description"';
+    groupBy += ', "Expenses"."date"';
+    orderBy = ' ORDER BY "Expenses"."date" ASC';
+    graphType = "Line";
+  }
+
   query +=
     ' FROM "Expenses" ' +
     'INNER JOIN "Users" ON ("Expenses"."userId" = "Users"."id") ' +
@@ -387,7 +399,7 @@ router.get("/graph", async (req, res) => {
   } else if (req.query.endDate) {
     query += ' AND "Expenses"."date" <= ' + "'" + req.query.endDate + "'";
   }
-  // query += " ";
+
   query += " " + groupBy;
   query += " " + orderBy;
 
@@ -416,6 +428,7 @@ router.get("/graph", async (req, res) => {
   res.render("expenses/graph.ejs", {
     dataOption: dataOption,
     dataSeries: graphData,
+    graphType: graphType,
   });
 });
 
