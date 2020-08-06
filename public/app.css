@@ -14,7 +14,7 @@ body {
 #all-header-section {
   grid-column: span 3;
   background-image: url(http://getwallpapers.com/wallpaper/full/9/0/e/1519557-dollar-wallpaper-1920x1200-for-tablet.jpg#.XynmVq4JOcs.link);
-  /* background-image: url(http://getwallpapers.com/wallpaper/full/0/8/2/1519542-free-dollar-wallpaper-1920x1080-for-ipad-2.jpg#.XynmVh1setg.link); */
+  /* background-image: url("1453912.jpg");*/
   background-size: fill;
   background-position: 80% 75%;
   background-repeat: repeat;
@@ -71,6 +71,7 @@ body {
   justify-content: center;
   margin-bottom: 10px;
   background-color: #f2cc5b;
+  border: 1px solid black;
 }
 
 #all-filter-header {
@@ -256,7 +257,7 @@ body {
 #edit-body-controls {
   display: flex;
   flex-direction: rows;
-  justify-content: center;
+  justify-content: flex-end;
 }
 
 /******************************************************************************/
@@ -487,10 +488,12 @@ footer {
 }
 .app-text-button {
   width: 100px;
-  background-color: #e7eaed;
+  background-color: #ffffff;
+  border-radius: 5px;
 }
 .app-text-go-button {
   width: 35px;
   background-color: #03b412;
   color: white;
+  border-radius: 5px;
 }
