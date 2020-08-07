@@ -46,11 +46,17 @@
               is3D: true,
               pieSliceText: "label",
             };
-
             var chart = new google.visualization.PieChart(
               document.getElementById("graph-body")
             );
           } else {
+            var options = {
+              title: "Expense Graph",
+              legend: { position: "top" },
+              fontSize: 11,
+              pointSize: 2,
+            };
+
             var chart = new google.visualization.LineChart(
               document.getElementById("graph-body")
             );
