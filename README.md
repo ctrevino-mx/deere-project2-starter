@@ -184,5 +184,5 @@ inside of the script the variable is assigned to data as a string with elements 
 
     ![](documentation/package_dependencies.png)
 
-- Image tools & sources
+- Image tools and sources
   - Source of wallpapers and images: [Include images in the UI](http://getwallpapers.com)
