@@ -21,7 +21,7 @@ Application goal: The application has been developed to provide a basic family e
 
 #### Entity Relationship Diagram
 
-![](documentation/Screenshot_ERD.png)
+![](documentation/screenshot_ERD.png)
 
 #### Wireframe
 
