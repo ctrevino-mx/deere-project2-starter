@@ -14,10 +14,6 @@ router.get("/profile/:id", (req, res) => {
 
 // UPDATE USER PROFILE ROUTE
 router.put("/profile/", (req, res) => {
-  console.log(
-    "###################### HITTING UPDATE FOR USERS ################################",
-    req.user.id
-  );
   UserModel.update(req.body, {
     where: { id: req.user.id },
     returning: true,
@@ -26,12 +22,8 @@ router.put("/profile/", (req, res) => {
   });
 });
 
-// DELETE ROUTE - DELETE AN EXPENSE
+// DELETE ROUTE - DELETE A USER
 router.delete("/", (req, res) => {
-  console.log(
-    "###################### HITTING DELETE FOR USERS ################################",
-    req.user.id
-  );
   UserModel.destroy({ where: { id: req.user.id } }).then(() => {
     res.redirect("/");
   });

@@ -13,16 +13,13 @@ const StatusModel = require("../models").Status;
 const Op = require("../models").Sequelize.Op;
 
 // FILTER ROUTE - FILTER THE EXPENSES BASED ON DEFINED CRITERIA
-// router.get("/filter/?", async (req, res) => {
 router.get("/filter/?", async (req, res) => {
   let whereClause = {};
   let isThereWhere = false;
   let query = "";
-  console.log(
-    "###################### HITTING FILTER ################################",
-    req.user.id
-  );
 
+  // CREATE DINAMICALLY A QUERY BASED ON THE USER INPUTS
+  // THESE INPUTS IMPACT THE WHERE CLAUSE
   query =
     'SELECT "Expenses"."id", "Expenses"."date","Expenses"."description","Expenses"."amount",' +
     '"Expenses"."comment","Expenses"."userId",' +
@@ -72,19 +69,9 @@ router.get("/filter/?", async (req, res) => {
 
   query += ' ORDER BY "Expenses"."date" DESC, "Expenses"."id" DESC';
 
-  console.log(
-    "====================== Hello there ========================",
-    query
-  );
-
   const filteredExpenses = await sequelize.query(query, {
     type: QueryTypes.SELECT,
   });
-
-  console.log(
-    "====================== FILTERED EXPENSES ===============================",
-    filteredExpenses
-  );
 
   const allAccounts = await AccountModel.findAll();
   const allSubaccounts = await SubaccountModel.findAll();
@@ -103,18 +90,12 @@ router.get("/filter/?", async (req, res) => {
     currentStatusId: parseInt(req.query.statusId),
     currentStartDate: req.query.startDate,
     currentEndDate: req.query.endDate,
-    // currentUserId: req.user.id,
   });
 });
 
-// ADD THE ROUTES HERE
 // INDEX ROUTE - GET ALL THE EXPENSES
 router.get("/", async (req, res) => {
   let query = "";
-  console.log(
-    "###################### HITTING GET/ID ################################",
-    req.user.id
-  );
 
   query =
     'SELECT "Expenses"."id", "Expenses"."date","Expenses"."description","Expenses"."amount",' +
@@ -132,14 +113,10 @@ router.get("/", async (req, res) => {
     'WHERE "Expenses"."userId" = ' +
     req.user.id;
   query += ' ORDER BY "Expenses"."date" DESC, "Expenses"."id" DESC';
-  console.log("======================== QUERY ========================", query);
+
   const completeExpenses = await sequelize.query(query, {
     type: QueryTypes.SELECT,
   });
-  console.log(
-    "======================== FILTERED EXPENSES ========================",
-    completeExpenses
-  );
 
   const allAccounts = await AccountModel.findAll();
   const allSubaccounts = await SubaccountModel.findAll();
@@ -158,22 +135,16 @@ router.get("/", async (req, res) => {
     currentStatusId: 0,
     currentStartDate: "",
     currentEndDate: "",
-    // currentUserId: req.user.id,
   });
 });
 
 //////////////////////////////////////////////////////////////////////////////////
 // NEW ROUTE - SEND EMPTY FORM TO THE USER TO CREATE A NEW EXPENSE
-// Get the last 5 expenses created for that specific user
+// Get the last 10 expenses created for that specific user
 // Get the info to populate the drop boxes
 // Render the new form to create the expenses displaying the 5 last expenses
 //////////////////////////////////////////////////////////////////////////////////
 router.get("/new", async (req, res) => {
-  console.log(
-    "###################### HITTING NEW/ID ################################",
-    req.user.id
-  );
-
   const todayExpenses = await ExpenseModel.findAll({
     where: {
       userId: req.user.id,
@@ -209,33 +180,20 @@ router.get("/new", async (req, res) => {
     currentStatusId: 0,
     currentStartDate: "",
     currentEndDate: "",
-    // currentUserId: req.user.id,
   });
 });
 
 // CREATE A NEW EXPENSE
 // After creating the expense display renders the new page to keep creating expenses
 router.post("/", (req, res) => {
-  console.log(
-    "###################### HITTING POST/ID ################################",
-    req.user.id
-  );
   req.body.userId = req.user.id;
   ExpenseModel.create(req.body).then((newExpense) => {
     res.redirect("/expenses/new/");
   });
 });
 
-// EDIT ROUTE
-// router.get("/:id/user/:userid/page/:pagename/edit", async (req, res) => {
+// EDIT ROUTE - DISPLAY THE FORM TO EDIT A EXPENSE
 router.get("/:id/page/:pagename/edit", async (req, res) => {
-  console.log(
-    "###################### HITTING GET/ID/EDIT ################################",
-    req.params.id,
-    // req.params.userid,
-    req.params.pagename,
-    req.user.id
-  );
   const allAccounts = await AccountModel.findAll();
   const allSubaccounts = await SubaccountModel.findAll();
   const allPaymentTypes = await PaymentTypeModel.findAll();
@@ -244,28 +202,17 @@ router.get("/:id/page/:pagename/edit", async (req, res) => {
   ExpenseModel.findByPk(req.params.id).then((foundExpense) => {
     res.render("expenses/edit.ejs", {
       expense: foundExpense,
-      // currentUserId: 0,
       account: allAccounts,
       subaccount: allSubaccounts,
       paymentType: allPaymentTypes,
       status: allStatuses,
-      // currentUserId: req.params.userid,
-      // currentUserId: req.user.id,
       triggerPage: req.params.pagename,
     });
   });
 });
 
 // PUT ROUTE - UPDATE THE SPECIFIC EXPENSE
-// router.put("/:id/page/:pagename/user/:userid", (req, res) => {
 router.put("/:id/page/:pagename", (req, res) => {
-  console.log(
-    "###################### HITTING PUT/ID ################################",
-    req.params.id,
-    req.params.pagename,
-    req.user.userid
-  );
-
   ExpenseModel.update(req.body, {
     where: { id: req.params.id },
     returning: true,
@@ -281,11 +228,6 @@ router.put("/:id/page/:pagename", (req, res) => {
 
 // DELETE ROUTE - DELETE AN EXPENSE
 router.delete("/:id/page/:pagename", (req, res) => {
-  console.log(
-    "###################### HITTING DELETE ################################",
-    req.params.pagename,
-    req.user.id
-  );
   ExpenseModel.destroy({ where: { id: req.params.id } }).then(() => {
     if (req.params.pagename === "display") {
       res.redirect("/expenses/");
@@ -296,7 +238,7 @@ router.delete("/:id/page/:pagename", (req, res) => {
   });
 });
 
-// GRAPH ROUTE - SELECT THE INFORMATION FOR THE GRAPH AND RENDER
+// BOARD ROUTE - SELECT THE INFORMATION FOR THE GRAPH AND RENDER
 router.get("/board", (req, res) => {
   const dataOption = [
     [1, "Account"],
@@ -305,10 +247,7 @@ router.get("/board", (req, res) => {
     [4, "Status"],
   ];
   let graphType = "";
-  console.log(
-    "###################### HITTING GRAPH ################################",
-    req.user.userid
-  );
+  // RENDERING THE EMPTY FORM TO CONFIGURE GRAPH
   res.render("expenses/graph.ejs", {
     dataOption: dataOption,
     dataSeries: [],
@@ -316,6 +255,7 @@ router.get("/board", (req, res) => {
   });
 });
 
+// GRAPH ROUTE - SELECT THE INFORMATION FOR THE GRAPH AND RENDER
 router.get("/graph", async (req, res) => {
   let query = "";
   let groupBy = "";
@@ -330,18 +270,10 @@ router.get("/graph", async (req, res) => {
     [4, "Status"],
   ];
 
-  console.log(
-    "HITTTTTTTTIIIIIINNNNNNNGGGGGG THE GRAPHIC",
-    req.query.optionId,
-    req.query.startDate,
-    req.query.endDate,
-    req.user.id
-  );
+  // CREATE DINAMICALLY THE QUERY BASED ON USER SELECTIONS
   query =
     'SELECT SUM("Expenses"."amount") AS "totalAmount",' + '"Expenses"."userId"';
   groupBy = 'GROUP BY "Expenses"."userId"';
-
-  console.log(req.query.optionId);
 
   if (parseInt(req.query.optionId) === 1) {
     query +=
@@ -403,28 +335,25 @@ router.get("/graph", async (req, res) => {
   query += " " + groupBy;
   query += " " + orderBy;
 
-  console.log(query);
-
+  // EXECUTING THE QUERY DINAMICALLY BUILD
   const filteredExpenses = await sequelize.query(query, {
     type: QueryTypes.SELECT,
   });
 
-  console.log(
-    "====================== FILTERED EXPENSES ===============================",
-    filteredExpenses
-  );
-
+  // PROCESS TO CONVERT THE DATA OBJECT INTO A TABLE
+  // Adding headers
   dataElement[0] = "Concept";
   dataElement[1] = "Amount";
   graphData.push(dataElement);
   dataElement = [];
+  // Adding rows
   filteredExpenses.forEach((item) => {
     dataElement[0] = item.description;
     dataElement[1] = parseInt(item.totalAmount);
     graphData.push(dataElement);
     dataElement = [];
   });
-  console.log(graphData);
+  // Rendering graph.ejs with the data table, options to populate drop box and type of graph
   res.render("expenses/graph.ejs", {
     dataOption: dataOption,
     dataSeries: graphData,

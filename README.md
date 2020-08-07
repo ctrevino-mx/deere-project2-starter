@@ -29,7 +29,7 @@ _Home_
 
 This form will welcome the user to the application for Signing Up, Log In and Log Out
 <br>
-![](documentation/Screenshot_home.png)
+![](documentation/screenshot_home.png)
 
 <br>
 
@@ -45,7 +45,7 @@ This form permits the user to see all the expenses. Because the number of expens
 
 User can edit and delete expenses with in this form
 
-![](documentation/Screenshot_display.png)
+![](documentation/screenshot_display.png)
 
 <br>
 
@@ -53,7 +53,7 @@ _Create an Expense_
 
 User will create expenses using this form. By default it only displays the last 10 expenses in the grid as a manner of reference. User can edit and delete expenses with in this form.
 
-![](documentation/Screenshot_new.png)
+![](documentation/screenshot_new.png)
 
 <br>
 
@@ -61,7 +61,7 @@ _Edit an Expense_
 
 User can edit an expense either when displaying expenses or creating a new expense. It allows you to modify any of the expense information. Once the edit information is submitted the application will return to the form that trigger the update action.
 
-![](documentation/Screenshot_edit.png)
+![](documentation/screenshot_edit.png)
 
 <br>
 
@@ -75,7 +75,7 @@ _Graph Expenses_
 
 With the use of pie and line graphs the user can utilize this form to analyze expenses in a general way to detect tendencies and proportions.
 
-![](documentation/Screenshot_graph.png)
+![](documentation/screenshot_graph.png)
 
 <br>
 
@@ -109,24 +109,24 @@ _Associations_
 
 #### Model associations
 
-![](documentation/Screenshot_model_asoc.png)
+![](documentation/screenshot_model_asoc.png)
 
 #### Table associations
 
-![](documentation/Screenshot_table_asoc.png)
+![](documentation/screenshot_table_asoc.png)
 
 _REST-ful routes_
 
 ##### Users
 
-![](documentation/Screenshot_user_REST.png)
+![](documentation/screenshot_user_REST.png)
 
 ##### Expenses
 
-![](documentation/Screenshot_expense_REST.png)
+![](documentation/screenshot_expense_REST.png)
 
 _Views_
-![](documentation/Screenshot_views.png)
+![](documentation/screenshot_views.png)
 
 ### Main Challenges
 
